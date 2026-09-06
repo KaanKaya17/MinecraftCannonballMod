@@ -1,0 +1,104 @@
+{
+  "cannon_fire": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "minecraft:random/explode",
+        "volume": 2.0,
+        "pitch": 0.55
+      },
+      {
+        "name": "minecraft:entity/lightning_bolt/thunder1",
+        "volume": 1.2,
+        "pitch": 0.75
+      }
+    ],
+    "subtitle": "subtitles.cannonball.cannon_fire"
+  },
+  "cannon_load": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "minecraft:block/iron_door/open",
+        "volume": 0.9,
+        "pitch": 1.3
+      },
+      {
+        "name": "minecraft:dig/gravel1",
+        "volume": 0.8,
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.cannonball.cannon_load"
+  },
+  "cannon_ram": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "minecraft:step/wood1",
+        "volume": 1.0,
+        "pitch": 0.65
+      },
+      {
+        "name": "minecraft:item/shield/block1",
+        "volume": 0.8,
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.cannonball.cannon_ram"
+  },
+  "cannon_aim": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "minecraft:dig/wood1",
+        "volume": 0.6,
+        "pitch": 1.4
+      }
+    ],
+    "subtitle": "subtitles.cannonball.cannon_aim"
+  },
+  "cannonball_whistle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "minecraft:entity/arrow/shoot",
+        "volume": 1.2,
+        "pitch": 0.45
+      }
+    ],
+    "subtitle": "subtitles.cannonball.cannonball_whistle"
+  },
+  "cannonball_ricochet": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "minecraft:random/anvil_land",
+        "volume": 1.5,
+        "pitch": 1.85
+      },
+      {
+        "name": "minecraft:mob/irongolem/hit1",
+        "volume": 1.0,
+        "pitch": 1.7
+      }
+    ],
+    "subtitle": "subtitles.cannonball.cannonball_ricochet"
+  },
+  "cannonball_impact": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "minecraft:random/explode",
+        "volume": 1.2,
+        "pitch": 1.2
+      },
+      {
+        "name": "minecraft:dig/stone1",
+        "volume": 1.0,
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.cannonball.cannonball_impact"
+  }
+}

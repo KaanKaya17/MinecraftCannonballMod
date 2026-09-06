@@ -11,11 +11,15 @@ repositories {
 	// for more information about repositories.
 }
 
+version = project.mod_version
+group = project.maven_group
+base.archivesName = project.archives_base_name
+
 loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"modid" {
+		"cannonball" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}

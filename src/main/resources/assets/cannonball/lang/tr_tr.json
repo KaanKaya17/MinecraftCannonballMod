@@ -1,0 +1,17 @@
+{
+  "item.cannonball.cannon": "Sahra Topu",
+  "item.cannonball.cannonball": "Demir Gülle",
+  "item.cannonball.ramrod": "Harbi",
+  "entity.cannonball.cannon": "Sahra Topu",
+  "entity.cannonball.cannonball": "Gülle",
+  "message.cannonball.powder_loaded": "Barut Dolduruldu (%s/%s)",
+  "message.cannonball.ball_loaded": "Gülle sürüldü! Harbilemeye hazır.",
+  "message.cannonball.rammed": "Top harbiledi ve ateşlemeye hazır!",
+  "subtitles.cannonball.cannon_fire": "Top ateşlendi",
+  "subtitles.cannonball.cannon_load": "Top dolduruldu",
+  "subtitles.cannonball.cannon_ram": "Top harbiledi",
+  "subtitles.cannonball.cannon_aim": "Top nişanlandı",
+  "subtitles.cannonball.cannonball_whistle": "Gülle ıslığı",
+  "subtitles.cannonball.cannonball_ricochet": "Gülle sekti",
+  "subtitles.cannonball.cannonball_impact": "Gülle çarptı"
+}

@@ -1,0 +1,17 @@
+{
+  "item.cannonball.cannon": "Field Cannon",
+  "item.cannonball.cannonball": "Iron Cannonball",
+  "item.cannonball.ramrod": "Cannon Ramrod",
+  "entity.cannonball.cannon": "Field Cannon",
+  "entity.cannonball.cannonball": "Cannonball",
+  "message.cannonball.powder_loaded": "Loaded Gunpowder (%s/%s)",
+  "message.cannonball.ball_loaded": "Cannonball loaded! Ready to ram.",
+  "message.cannonball.rammed": "Cannon rammed and ready to fire!",
+  "subtitles.cannonball.cannon_fire": "Cannon fires",
+  "subtitles.cannonball.cannon_load": "Cannon loaded",
+  "subtitles.cannonball.cannon_ram": "Cannon rammed",
+  "subtitles.cannonball.cannon_aim": "Cannon aimed",
+  "subtitles.cannonball.cannonball_whistle": "Cannonball whistling",
+  "subtitles.cannonball.cannonball_ricochet": "Cannonball ricochets",
+  "subtitles.cannonball.cannonball_impact": "Cannonball impacts"
+}
