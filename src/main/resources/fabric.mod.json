@@ -3,11 +3,14 @@
 	"id": "cannonball",
 	"version": "${version}",
 	"name": "Realistic Cannonball Mod",
-	"description": "Custom modeled field cannon and realistic ballistics cannonball mod with ricochet and penetration.",
+	"description": "Custom 3D modeled field artillery with realistic ballistics, ricochet physics, block penetration, and driving controls.",
 	"authors": [
-		"Antigravity"
+		"Kaan Kaya"
 	],
-	"contact": {},
+	"contact": {
+		"homepage": "https://github.com/KaanKaya17/MinecraftCannonballMod",
+		"sources": "https://github.com/KaanKaya17/MinecraftCannonballMod"
+	},
 	"license": "MIT",
 	"icon": "assets/cannonball/icon.png",
 	"environment": "*",
