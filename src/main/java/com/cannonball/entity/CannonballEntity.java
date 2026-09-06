@@ -61,32 +61,40 @@ public class CannonballEntity extends Projectile {
         super.tick();
         lifeTicks++;
 
-        if (lifeTicks > 600) { // Discard after 30 seconds
-            discard();
-            return;
-        }
-
+        Vec3 pos = position();
         Vec3 motion = getDeltaMovement();
         double speed = motion.length();
 
-        // Spin calculation
+        // Spin calculation for 3D rolling model
         prevSpinAngle = spinAngle;
         spinAngle += (float) (speed * 18.0);
 
-        // Visual effects in flight
+        // Visual effects in flight (Client-side)
         if (level().isClientSide) {
-            if (speed > 0.3) {
-                level().addParticle(ParticleTypes.SMOKE, getX(), getY() + 0.15, getZ(),
-                        -motion.x * 0.1 + (random.nextDouble() - 0.5) * 0.05,
-                        -motion.y * 0.1 + (random.nextDouble() - 0.5) * 0.05,
-                        -motion.z * 0.1 + (random.nextDouble() - 0.5) * 0.05);
+            if (speed > 0.2) {
+                level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY() + 0.1, getZ(),
+                        -motion.x * 0.08 + (random.nextDouble() - 0.5) * 0.03,
+                        -motion.y * 0.08 + (random.nextDouble() - 0.5) * 0.03,
+                        -motion.z * 0.08 + (random.nextDouble() - 0.5) * 0.03);
 
-                if (powderCharge >= 2 && random.nextFloat() < 0.4F) {
-                    level().addParticle(ParticleTypes.FLAME, getX(), getY() + 0.15, getZ(),
-                            -motion.x * 0.05, -motion.y * 0.05, -motion.z * 0.05);
+                if (powderCharge >= 2 && random.nextFloat() < 0.5F) {
+                    level().addParticle(ParticleTypes.FLAME, getX(), getY() + 0.1, getZ(),
+                            -motion.x * 0.04, -motion.y * 0.04, -motion.z * 0.04);
                 }
             }
+
+            // Client side dead-reckoning movement
+            motion = motion.scale(0.992);
+            motion = motion.subtract(0, 0.038, 0);
+            setDeltaMovement(motion);
+            setPos(pos.add(motion));
         } else {
+            // Server side: Timeout or out of world triggers visible airburst detonation
+            if (lifeTicks > 400 || getY() < level().getMinBuildHeight()) {
+                detonate();
+                return;
+            }
+
             // Server side whistling sound
             if (speed > 1.2 && lifeTicks % 7 == 0) {
                 level().playSound(null, getX(), getY(), getZ(), ModSounds.CANNONBALL_WHISTLE,
@@ -94,9 +102,7 @@ public class CannonballEntity extends Projectile {
             }
 
             // Continuous collision check
-            Vec3 pos = position();
             Vec3 nextPos = pos.add(motion);
-
             HitResult hitResult = findHit(pos, nextPos);
             if (hitResult.getType() != HitResult.Type.MISS) {
                 onHit(hitResult);
@@ -107,7 +113,7 @@ public class CannonballEntity extends Projectile {
             motion = motion.scale(0.992); // realistic drag
             motion = motion.subtract(0, 0.038, 0); // gravity
             setDeltaMovement(motion);
-            setPos(pos.add(motion));
+            setPos(nextPos);
             checkInsideBlocks();
         }
     }
@@ -233,7 +239,13 @@ public class CannonballEntity extends Projectile {
         float explosionPower = (float) (1.2 + powderCharge * 0.9);
         level().explode(this, getX(), getY(), getZ(), explosionPower, Level.ExplosionInteraction.MOB);
 
-        level().playSound(null, getX(), getY(), getZ(), ModSounds.CANNONBALL_IMPACT, SoundSource.NEUTRAL, 1.8F, 0.8F);
+        if (level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1, 0, 0, 0, 0);
+            serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE, getX(), getY(), getZ(), 20, 0.4, 0.4, 0.4, 0.1);
+            serverLevel.sendParticles(ParticleTypes.FLAME, getX(), getY(), getZ(), 15, 0.3, 0.3, 0.3, 0.15);
+        }
+
+        level().playSound(null, getX(), getY(), getZ(), ModSounds.CANNONBALL_IMPACT, SoundSource.NEUTRAL, 2.0F, 0.8F);
         discard();
     }
 

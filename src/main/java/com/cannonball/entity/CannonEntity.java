@@ -42,6 +42,7 @@ public class CannonEntity extends Entity {
     public CannonEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
         this.blocksBuilding = true;
+        this.setMaxUpStep(0.6F); // Step over slabs and small blocks smoothly
     }
 
     public CannonEntity(Level level, double x, double y, double z) {
@@ -51,7 +52,7 @@ public class CannonEntity extends Entity {
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(DATA_PITCH, 10.0F);
+        this.entityData.define(DATA_PITCH, 0.0F);
         this.entityData.define(DATA_POWDER, 0);
         this.entityData.define(DATA_LOADED, false);
         this.entityData.define(DATA_RAMMED, false);
@@ -126,18 +127,33 @@ public class CannonEntity extends Entity {
     public void tick() {
         super.tick();
 
-        // Gravity
-        if (!this.isNoGravity()) {
-            this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.04, 0.0));
-        }
-
-        this.move(net.minecraft.world.entity.MoverType.SELF, this.getDeltaMovement());
-        this.setDeltaMovement(this.getDeltaMovement().scale(0.85));
-
-        // Passenger handling
-        // Passenger handling
+        // Passenger aiming & driving handling
         Entity passenger = this.getFirstPassenger();
-        if (passenger instanceof LivingEntity living) {
+        if (passenger instanceof Player player) {
+            this.setYRot(player.getYRot());
+            this.yRotO = player.yRotO;
+            float clampedPitch = Mth.clamp(player.getXRot(), -55.0F, 15.0F);
+            this.setXRot(clampedPitch);
+            this.xRotO = clampedPitch;
+            this.setCannonPitch(clampedPitch);
+
+            // Driving controls (W / S keys)
+            float forwardInput = player.zza; // +1.0 for W, -1.0 for S
+            if (forwardInput != 0.0F) {
+                float yawRad = (float) Math.toRadians(player.getYRot());
+                // Forward towing speed: 0.08 blocks/tick (~1.6 blocks/sec), backward: 0.045 blocks/tick
+                double driveSpeed = forwardInput > 0.0F ? 0.08 : -0.045;
+                double mx = -Math.sin(yawRad) * driveSpeed;
+                double mz = Math.cos(yawRad) * driveSpeed;
+
+                this.setDeltaMovement(this.getDeltaMovement().add(mx, 0.0, mz));
+
+                // Wooden axle & wheel sound while moving on ground
+                if (onGround() && tickCount % 10 == 0) {
+                    level().playSound(null, getX(), getY(), getZ(), ModSounds.CANNON_AIM, SoundSource.BLOCKS, 0.7F, (float) (0.85 + random.nextDouble() * 0.3));
+                }
+            }
+        } else if (passenger instanceof LivingEntity living) {
             this.setYRot(living.getYRot());
             this.yRotO = living.yRotO;
             float clampedPitch = Mth.clamp(living.getXRot(), -55.0F, 15.0F);
@@ -146,6 +162,20 @@ public class CannonEntity extends Entity {
             this.setCannonPitch(clampedPitch);
         } else {
             this.setXRot(getCannonPitch());
+        }
+
+        // Gravity
+        if (!this.isNoGravity()) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.04, 0.0));
+        }
+
+        this.move(net.minecraft.world.entity.MoverType.SELF, this.getDeltaMovement());
+
+        // Ground friction / deceleration
+        if (onGround()) {
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0.72, 1.0, 0.72));
+        } else {
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0.92, 1.0, 0.92));
         }
 
         // Fuse countdown
@@ -323,27 +353,57 @@ public class CannonEntity extends Entity {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) return false;
-        if (!level().isClientSide && !isRemoved()) {
+        if (this.isRemoved()) return false;
+
+        Entity attacker = source.getEntity();
+
+        // Creative mode: instabreak
+        if (attacker instanceof Player player && player.getAbilities().instabuild) {
+            destroy(false);
+            return true;
+        }
+
+        if (!level().isClientSide) {
             this.health -= amount;
             this.markHurt();
+
+            level().playSound(null, getX(), getY(), getZ(), SoundEvents.ZOMBIE_ATTACK_WOODEN_DOOR, SoundSource.BLOCKS, 0.9F, 1.1F);
+
             if (this.health <= 0.0F) {
-                destroyAndDrop();
+                destroy(true);
             }
         }
         return true;
     }
 
-    public void destroyAndDrop() {
+    public void destroy(boolean dropItems) {
+        if (this.isRemoved()) return;
         this.discard();
+
         if (!level().isClientSide) {
-            spawnAtLocation(new ItemStack(ModItems.CANNON));
-            if (getPowder() > 0) {
-                spawnAtLocation(new ItemStack(Items.GUNPOWDER, getPowder()));
+            level().playSound(null, getX(), getY(), getZ(), SoundEvents.ANVIL_DESTROY, SoundSource.BLOCKS, 1.0F, 0.8F);
+
+            if (level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                serverLevel.sendParticles(new net.minecraft.core.particles.BlockParticleOption(ParticleTypes.BLOCK, net.minecraft.world.level.block.Blocks.OAK_PLANKS.defaultBlockState()),
+                        getX(), getY() + 0.5, getZ(), 25, 0.35, 0.35, 0.35, 0.15);
+                serverLevel.sendParticles(new net.minecraft.core.particles.BlockParticleOption(ParticleTypes.BLOCK, net.minecraft.world.level.block.Blocks.IRON_BLOCK.defaultBlockState()),
+                        getX(), getY() + 0.5, getZ(), 15, 0.25, 0.25, 0.25, 0.15);
             }
-            if (isLoaded()) {
-                spawnAtLocation(new ItemStack(ModItems.CANNONBALL));
+
+            if (dropItems) {
+                spawnAtLocation(new ItemStack(ModItems.CANNON));
+                if (getPowder() > 0) {
+                    spawnAtLocation(new ItemStack(Items.GUNPOWDER, getPowder()));
+                }
+                if (isLoaded()) {
+                    spawnAtLocation(new ItemStack(ModItems.CANNONBALL));
+                }
             }
         }
+    }
+
+    public void destroyAndDrop() {
+        destroy(true);
     }
 
     @Override

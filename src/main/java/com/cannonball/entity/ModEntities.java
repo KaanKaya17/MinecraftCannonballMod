@@ -14,7 +14,7 @@ public class ModEntities {
             BuiltInRegistries.ENTITY_TYPE,
             new ResourceLocation(CannonballMod.MOD_ID, "cannon"),
             FabricEntityTypeBuilder.<CannonEntity>create(MobCategory.MISC, CannonEntity::new)
-                    .dimensions(EntityDimensions.fixed(1.4F, 1.0F))
+                    .dimensions(EntityDimensions.fixed(1.6F, 1.1F))
                     .trackRangeBlocks(64)
                     .trackedUpdateRate(2)
                     .build()
