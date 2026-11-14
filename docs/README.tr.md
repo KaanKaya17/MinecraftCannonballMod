@@ -4,6 +4,10 @@
 
 Minecraft 1.20.1 için bu Fabric modu, binilip hareket ettirilebilen bir sahra topu, gülle ve harbi ekler. Gülle, çarptığı bloğa göre sekebilir ya da bloğu kırabilir. Topun kendi modeli, geri tepme animasyonu, sesleri ve duman efektleri vardır.
 
+![Demir namlusu, ahşap kundağı ve iki tekerleğiyle sahra topunun 3B görünümü](images/field-cannon.png)
+
+*Modun sahra topu modeli ve dokusuyla hazırlanmış 3B görsel.*
+
 ## Kurulum
 
 1. Minecraft Java Edition **1.20.1**, **Fabric Loader 0.19.5 veya üzeri** ve **Java 17 veya üzerini** kur.
@@ -16,6 +20,12 @@ Minecraft 1.20.1 için bu Fabric modu, binilip hareket ettirilebilen bir sahra t
 - **Yerleştirme ve hareket.** Top eşyasını bir blok üzerinde kullan. Boş elle sağ tıklayarak topa bin. Fareyle nişan al, ileri ve geri tuşlarıyla hareket et ve eğilme tuşuyla in.
 - **Doldurma ve ateşleme.** Sırayla bir ile üç barut ve bir demir gülle kullan. Harbiyle gülleyi sıkıştırabilirsin. Çakmak veya ateş topu gerekirse gülleyi sıkıştırır ve fitili yakar.
 - **Kızıltaş.** Topun bulunduğu konumda veya altındaki blokta sinyal algılanırsa doldurulmuş ve sıkıştırılmış top ateşlenir. Minecraft’ın fırlatıcısı demir gülleyi doğrudan atabilir.
+
+<p>
+  <img src="../src/main/resources/assets/cannonball/textures/item/cannon.png" width="32" height="32" alt="Sahra topu">
+  <img src="../src/main/resources/assets/cannonball/textures/item/cannonball.png" width="32" height="32" alt="Demir gülle">
+  <img src="../src/main/resources/assets/cannonball/textures/item/ramrod.png" width="32" height="32" alt="Harbi">
+</p>
 
 [Üretim tarifleri](../README.md#crafting) · [Tarif dosyaları](../src/main/resources/data/cannonball/recipes)
 

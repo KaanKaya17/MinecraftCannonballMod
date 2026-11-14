@@ -4,6 +4,10 @@
 
 A Fabric mod for Minecraft 1.20.1 that adds a mountable field cannon, cannonballs, and a ramrod. Projectiles can ricochet or break blocks depending on what they hit. The cannon has a custom model, recoil animation, sounds, and smoke effects.
 
+![3D render of the field cannon with its iron barrel, wooden carriage, and two spoked wheels](docs/images/field-cannon.png)
+
+*Rendered from the mod's field cannon model and texture.*
+
 ## Install
 
 1. Set up Minecraft Java Edition **1.20.1** with **Fabric Loader 0.19.5 or later** and Java **17 or later**.
@@ -21,9 +25,9 @@ A Fabric mod for Minecraft 1.20.1 that adds a mountable field cannon, cannonball
 
 | Item | Ingredients | Pattern, top to bottom |
 | --- | --- | --- |
-| Field Cannon | 4 iron blocks (`B`), 2 iron ingots (`I`), 1 oak log (`L`) | `.B.` / `BBB` / `ILI` |
-| Iron Cannonball ×4 | 4 iron ingots (`I`), 1 coal (`C`) | `.I.` / `ICI` / `.I.` |
-| Ramrod | 1 iron ingot (`I`), 2 sticks (`S`) | `..I` / `.S.` / `S..` |
+| <img src="src/main/resources/assets/cannonball/textures/item/cannon.png" width="32" height="32" alt=""> Field Cannon | 4 iron blocks (`B`), 2 iron ingots (`I`), 1 oak log (`L`) | `.B.` / `BBB` / `ILI` |
+| <img src="src/main/resources/assets/cannonball/textures/item/cannonball.png" width="32" height="32" alt=""> Iron Cannonball ×4 | 4 iron ingots (`I`), 1 coal (`C`) | `.I.` / `ICI` / `.I.` |
+| <img src="src/main/resources/assets/cannonball/textures/item/ramrod.png" width="32" height="32" alt=""> Ramrod | 1 iron ingot (`I`), 2 sticks (`S`) | `..I` / `.S.` / `S..` |
 
 Dots indicate empty crafting slots. [Recipe files](src/main/resources/data/cannonball/recipes)
 
